@@ -1,5 +1,8 @@
 import js from '@eslint/js';
 import globals from 'globals';
+
+// Importing necessary ESLint plugins
+import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
@@ -11,13 +14,16 @@ export default [
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parser: '@babel/eslint-parser', // Use Babel parser
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
         sourceType: 'module',
+        requireConfigFile: false, // Disable requiring a config file for Babel
       },
     },
     plugins: {
+      react: react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       prettier: eslintPluginPrettier, // Prettier plugin
