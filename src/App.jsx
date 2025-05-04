@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 
+// Pages
+import Login from './pages/Login';
+
 function App() {
   const [data, setData] = useState(0);
 
+  // Fetch data from the server when the component mounts
   useEffect(() => {
     fetch('http://localhost:3000/', {
       method: 'GET',
@@ -25,16 +29,12 @@ function App() {
         console.error('There was a problem with the fetch operation:', error);
       });
 
-    return () => {
-      console.log('Component unmounted');
-    };
+    return () => {};
   }, []);
 
   return (
     <>
-      <div className="card">
-        <h1>{data ? JSON.stringify(data) : 'Carregando...'}</h1>
-      </div>
+      <Login />
     </>
   );
 }
