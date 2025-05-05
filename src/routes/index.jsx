@@ -1,5 +1,8 @@
 // Navegation
-import { Routes, Route } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
+
+// Route Personalization
+import MyRoute from './myRoute.jsx';
 
 // Pages
 import Login from '../pages/Login';
@@ -8,8 +11,8 @@ import NotFound from '../pages/NotFound';
 export default function RoutesClient() {
   return (
     <Routes>
-      <Route exact path="/" element={<Login />} />
-      <Route path="*" element={<NotFound />} />
+      <MyRoute exact path="/" element={<Login />} />
+      <MyRoute path="*" element={<NotFound />} />
     </Routes>
   );
 }
