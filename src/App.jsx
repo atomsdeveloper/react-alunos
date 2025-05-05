@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 
+// Global Styles
+import './styles/GlobalStyles.js';
+
 // Pages
 import Login from './pages/Login';
 
