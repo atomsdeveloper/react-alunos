@@ -1,19 +1,25 @@
+// Services
+import history from './services/history.js';
+
 // Global Styles
 import { GlobalStyles } from './styles/GlobalStyles.js';
+
+// Router Dom
+import { Router } from 'react-router-dom';
 
 // Components
 import Header from './components/Header';
 
-// Pages
-import Login from './pages/Login';
+// Routes
+import RoutesClient from './routes/index.jsx';
 
 function App() {
   return (
-    <>
+    <Router history={history}>
       <Header />
-      <Login />
+      <RoutesClient />
       <GlobalStyles />
-    </>
+    </Router>
   );
 }
 
