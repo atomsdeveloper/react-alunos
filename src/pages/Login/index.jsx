@@ -18,7 +18,7 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const handleClick = async () => {
-    dispatch(LoginActions.ButtonClick());
+    dispatch(LoginActions.ButtonClickRequest());
     console.log(msg);
   };
 

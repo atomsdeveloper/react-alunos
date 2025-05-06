@@ -2,8 +2,8 @@
 import { combineReducers } from 'redux';
 
 // Reducers
-import consoleLog from './login/reducer';
+import ButtonClickReducer from './login/reducer';
 
 export default combineReducers({
-  login: consoleLog,
+  login: ButtonClickReducer,
 });
