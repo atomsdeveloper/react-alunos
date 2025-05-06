@@ -1,10 +1,10 @@
 // Styled Component
 import { Container } from '../../styles/GlobalStyles';
 
-export default function Login() {
+export default function Student() {
   return (
     <Container>
-      <h1>Login</h1>
+      <h1>Student</h1>
     </Container>
   );
 }
