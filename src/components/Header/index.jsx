@@ -5,7 +5,7 @@ import { Nav } from './styled';
 import { Link } from 'react-router-dom';
 
 // Icons
-import { FaHome, FaUserAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUserAlt, FaSignOutAlt, FaBookMedical } from 'react-icons/fa';
 
 export default function Header() {
   return (
@@ -13,11 +13,11 @@ export default function Header() {
       <Link to="/" target="_blank" rel="noopener noreferrer">
         <FaHome size={24} color="#fff" />
       </Link>
-      <Link to="/login" target="_blank" rel="noopener noreferrer">
-        <FaSignOutAlt size={24} color="#fff" />
-      </Link>
-      <Link to="" target="_blank" rel="noopener noreferrer">
+      <Link to="/" target="_blank" rel="noopener noreferrer">
         <FaUserAlt size={24} color="#fff" />
+      </Link>
+      <Link to="/estudantes" target="_blank" rel="noopener noreferrer">
+        <FaBookMedical size={24} color="#fff" />
       </Link>
     </Nav>
   );
