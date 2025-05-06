@@ -1,15 +1,16 @@
 // React Router
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Navigate, useLocation } from 'react-router-dom';
 
 // Types
 import PropTypes from 'prop-types';
 
-export default function MyRoute({
+export default function PrivateRoute({
   component: Component,
   isClosed = false,
   ...rest
 }) {
-  const isLoggedIn = true; // Replace with your actual authentication logic
+  const location = useLocation();
+  const isLoggedIn = false; // Replace with your actual authentication logic
 
   if (isClosed && !isLoggedIn) {
     return (
@@ -17,14 +18,12 @@ export default function MyRoute({
       // Pass the current location to the login page so it can redirect back after login
       // This is useful for when the user tries to access a protected route directly
       // and needs to be redirected to the login page first
-      <Redirect
-        to={{ pathname: '/login', state: { prevPath: rest.location.pathname } }}
-      />
+      <Navigate to="/" replace state={{ prevPath: location.pathname }} />
     );
   }
   return <Route {...rest} component={Component} />;
 }
-MyRoute.propTypes = {
+PrivateRoute.propTypes = {
   component: PropTypes.oneOf([PropTypes.elementType, PropTypes.func])
     .isRequired,
   isClosed: PropTypes.bool,

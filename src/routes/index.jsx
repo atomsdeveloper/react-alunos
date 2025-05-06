@@ -1,18 +1,27 @@
 // Navegation
-import { Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 // Route Personalization
-import MyRoute from './myRoute.jsx';
+import PrivateRoute from './PrivateRoute.jsx';
 
 // Pages
 import Login from '../pages/Login';
+import Students from '../pages/Students';
 import NotFound from '../pages/NotFound';
 
 export default function RoutesClient() {
   return (
     <Routes>
-      <MyRoute exact path="/" element={<Login />} />
-      <MyRoute path="*" element={<NotFound />} />
+      <Route path="/" element={<Login />} />
+      <Route
+        path="/estudantes"
+        element={
+          <PrivateRoute isClosed>
+            <Students />
+          </PrivateRoute>
+        }
+      />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
