@@ -1,6 +1,11 @@
+// Styled Components
 import Styled, { createGlobalStyle } from 'styled-components';
 
-import { primaryColor, primaryColorDark } from '../config/colors';
+// React Toastify
+import 'react-toastify/dist/ReactToastify.css';
+
+// Config Colors
+import * as Colors from '../config/colors';
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -12,8 +17,8 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: 'Roboto', sans-serif;
-    background-color: ${primaryColorDark};
-    color: ${primaryColor};
+    background-color: ${Colors.primaryColorDark};
+    color: ${Colors.primaryColor};
     font-size: 16px;
   }
 
@@ -23,7 +28,7 @@ export const GlobalStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
-    background: ${primaryColor};
+    background: ${Colors.primaryColor};
     border: none;
     color: #fff;
     padding: 10px 20px;
@@ -46,6 +51,16 @@ export const GlobalStyles = createGlobalStyle`
 
   p {
     margin: 0;
+  }
+
+  // Toastify from css suecess
+  body .Toastify__toast-container .Toastify__toast-success {
+    background: ${Colors.successColor};
+  }
+
+  // Toastify from css error
+  body .Toastify__toast-container .Toastify__toast-error {
+    background: ${Colors.errorColor};
   }
 `;
 
