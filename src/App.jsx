@@ -8,7 +8,7 @@ import { GlobalStyles } from './styles/GlobalStyles.js';
 import { ToastContainer } from 'react-toastify';
 
 // Router Dom
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 // Components
 import Header from './components/Header';
@@ -16,18 +16,20 @@ import Header from './components/Header';
 // Routes
 import RoutesClient from './routes/index.jsx';
 
+// Redux
+import { Provider } from 'react-redux';
+import store from './store/index.js';
+
 function App() {
   return (
-    <Router history={history}>
-      <Header />
-      <RoutesClient />
-      <GlobalStyles />
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        className="toast-container"
-      />
-    </Router>
+    <Provider store={store}>
+      <BrowserRouter history={history}>
+        <GlobalStyles />
+        <Header />
+        <RoutesClient />
+        <ToastContainer autoClose={3000} theme="dark" position="top-right" />
+      </BrowserRouter>
+    </Provider>
   );
 }
 
