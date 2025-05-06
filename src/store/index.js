@@ -1,8 +1,11 @@
 // Redux store configuration file
 import { configureStore } from '@reduxjs/toolkit';
+import { persistStore } from 'redux-persist';
+
 // Redux Saga
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './modules/rootSaga';
+import { persistedReducer } from './modules/reduxPersist';
 
 // Import the root reducer
 import rootReducer from './modules/rootReducer';
@@ -13,15 +16,15 @@ const sagaMiddleware = createSagaMiddleware();
 
 // Configure the Redux store
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer(rootReducer),
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }).concat(sagaMiddleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
 });
 
 // Run the root saga
 // This will start the saga middleware and run the root saga
 sagaMiddleware.run(rootSaga);
 
-export default store;
+// Persist data in local storage like actions are calling.
+const persistor = persistStore(store);
+export { store, persistor };

@@ -18,17 +18,21 @@ import RoutesClient from './routes/index.jsx';
 
 // Redux
 import { Provider } from 'react-redux';
-import store from './store/index.js';
+import { store, persistor } from './store/index.js';
+// Redux -> Persist
+import { PersistGate } from 'redux-persist/integration/react'; // Pass datas to all components
 
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter history={history}>
-        <GlobalStyles />
-        <Header />
-        <RoutesClient />
-        <ToastContainer autoClose={3000} theme="dark" position="top-right" />
-      </BrowserRouter>
+      <PersistGate persistor={persistor}>
+        <BrowserRouter>
+          <GlobalStyles />
+          <Header />
+          <RoutesClient />
+          <ToastContainer autoClose={3000} theme="dark" position="top-right" />
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   );
 }
