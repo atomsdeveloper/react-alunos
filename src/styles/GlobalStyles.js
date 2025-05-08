@@ -70,6 +70,7 @@ export const Container = Styled.section`
     margin: 0 auto;
     padding: 30px;
     display: flex;
+    flex-direction: column;
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
