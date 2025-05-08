@@ -34,6 +34,11 @@ export const GlobalStyles = createGlobalStyle`
     padding: 10px 20px;
     border-radius: 4px;
     font-weight: 700;
+    transition: all 300ms;
+  }
+
+  butto:hover {
+    filter: brightness(80%)
   }
 
   a {
@@ -67,10 +72,11 @@ export const GlobalStyles = createGlobalStyle`
 // Container Global
 export const Container = Styled.section`
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 30px auto;
     padding: 30px;
     display: flex;
     flex-direction: column;
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
 `;
