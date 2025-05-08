@@ -18,19 +18,19 @@ export default function RoutesClient() {
       <Route path="/" element={<Students />} />
 
       <Route
-        path="/aluno/:id/edit"
+        path="/students/:id/edit"
         element={
           <PrivateRoute isClosed>
-            <Student />
+            <UpdateStudent />
           </PrivateRoute>
         }
       />
 
       <Route
-        path="/aluno"
+        path="/students/create"
         element={
           <PrivateRoute isClosed>
-            <Student />
+            <CreatedStudent />
           </PrivateRoute>
         }
       />
