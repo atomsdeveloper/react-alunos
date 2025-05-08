@@ -2,8 +2,8 @@
 import { combineReducers } from 'redux';
 
 // Reducers
-import ButtonClickReducer from './login/reducer';
+import auth from './auth/reducer';
 
 export default combineReducers({
-  login: ButtonClickReducer,
+  auth,
 });

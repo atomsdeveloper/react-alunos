@@ -3,10 +3,10 @@
 import { all } from 'redux-saga/effects';
 
 // Importing the login saga from the login module
-import loginSaga from './login/sagas.js';
+import auth from './auth/sagas.js';
 
 // This is the root saga that combines all the sagas in the application
 // It uses the `all` effect from redux-saga to run multiple sagas in parallel
 export default function* rootSaga() {
-  yield all([loginSaga]);
+  yield all([auth]);
 }
