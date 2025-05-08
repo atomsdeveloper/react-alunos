@@ -1,8 +1,69 @@
+import React from 'react';
+
+// Link
+import { Link } from 'react-router-dom';
+
+// Axios
+import axios from '../../services/axios';
+
+// Icons
+import { FaUserCircle, FaEdit, FaWindowClose } from 'react-icons/fa';
+
+// Styled Component Global
+import { Container } from '../../styles/GlobalStyles';
+
+// Styled Components
+import { ContainerStudents, ProfilePicture } from './styled';
+
+// Loadash
+import get from 'lodash.get';
+
 export default function Students() {
+  const [students, setStudents] = React.useState([]);
+
+  React.useEffect(() => {
+    async function fetch() {
+      try {
+        const response = await axios.get('/students');
+        setStudents(response.data?.data);
+        console.log(response.data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetch();
+  }, []);
+
   return (
-    <div>
+    <Container>
       <h1>Students</h1>
-      <p>List of students will be displayed here.</p>
-    </div>
+
+      <ContainerStudents>
+        {students?.map((student) => (
+          <div key={student.id}>
+            <ProfilePicture>
+              {get(student, 'photos[0].url', false) ? (
+                <img src={student.photos[0].url} alt="" />
+              ) : (
+                <FaUserCircle size={36} />
+              )}
+            </ProfilePicture>
+            <span>{student.name}</span>
+            <span>{student.email}</span>
+
+            {/* Update */}
+            <Link to={`/students/${student.id}/edit`}>
+              <FaEdit />
+            </Link>
+
+            {/* Delete */}
+            <Link to={`/students/${student.id}/delete`}>
+              <FaWindowClose />
+            </Link>
+          </div>
+        ))}
+      </ContainerStudents>
+    </Container>
   );
 }
