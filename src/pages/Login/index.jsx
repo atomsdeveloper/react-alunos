@@ -30,6 +30,7 @@ import { toast } from 'react-toastify';
 
 export default function Login(props) {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const prevPath = get(props, 'location.state.prevPath', '/');
 
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ export default function Login(props) {
   }
 
   React.useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && !isLoading) {
       navigate(prevPath);
     }
   }, [isLoggedIn, navigate, prevPath]);
