@@ -1,22 +1,17 @@
 import React from 'react';
 
-// Axios
-import axios from '../../services/axios';
-
-// Lodash
-import get from 'lodash.get';
-
 // Styled Component Global
 import { Container } from '../../styles/GlobalStyles';
 
 // Styled Components
 import { Form, LabelContainer } from './styled';
 
-// Components
+// Component
 import Loading from '../../components/Loading';
 
-// React Router
-import { useNavigate } from 'react-router-dom';
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+import * as Actions from '../../store/modules/auth/actions';
 
 // Toastify
 import { toast } from 'react-toastify';
@@ -25,12 +20,26 @@ import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
 
 export default function Register() {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useSelector((state) => console.log('State', state));
+
+  const idStorage = useSelector((state) => state.auth.user.id);
+  const nameStorage = useSelector((state) => state.auth.user.name);
+  const emailStorage = useSelector((state) => state.auth.user.email);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const [isLoading, setIsLoading] = React.useState(false);
+  React.useEffect(() => {
+    console.log('REGISTER -> Check is idStorage:', idStorage);
+    if (!idStorage) return;
+
+    setName(nameStorage);
+    setEmail(emailStorage);
+  }, [idStorage, nameStorage, emailStorage]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -52,42 +61,21 @@ export default function Register() {
       toast.warn('E-mail não é válido.');
     }
 
-    if (pass.length < 1 || pass.length > 100) {
+    if (!idStorage && (pass.length < 1 || pass.length > 100)) {
       formErrors = true;
       toast.warn('Campo senha precisa ter entre 12 e 100 caracteres.');
     }
 
     if (formErrors) return;
-    setIsLoading(true);
 
-    try {
-      const response = await axios.post('/users/create', {
-        name,
-        password,
-        email,
-      });
-
-      const { data, message, success } = response.data;
-
-      if (success) {
-        toast.success(`Usuário ${data.name} ${message}`);
-      }
-
-      setIsLoading(false);
-      navigate('/login');
-    } catch (e) {
-      const errors = get(e, 'response.data.data.erros', []);
-
-      errors && errors.map((err) => toast.error(err));
-      setIsLoading(false);
-    }
+    dispatch(Actions.ButtonRegisterClickRequest({ name, email, password }));
   }
 
   return (
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1>Crie sua conta</h1>
+      {idStorage ? <h1>Edite a sua conta</h1> : <h1>Crie sua conta</h1>}
 
       <Form onSubmit={handleSubmit}>
         <LabelContainer>
@@ -128,7 +116,7 @@ export default function Register() {
           />
         </LabelContainer>
 
-        <button type="submit">Registrar</button>
+        <button type="submit">{idStorage ? 'Salvar' : 'Registrar'}</button>
       </Form>
     </Container>
   );
