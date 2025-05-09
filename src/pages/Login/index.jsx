@@ -1,5 +1,10 @@
-// Styled Component
+import React from 'react';
+
+// Styled Component Global
 import { Container } from '../../styles/GlobalStyles';
+
+// Styled Component
+import { Form, LabelContainer } from './styled';
 
 // React Router
 import { useNavigate } from 'react-router-dom';
@@ -19,8 +24,8 @@ import * as Actions from '../../store/modules/auth/actions';
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
+  const [password, setPass] = React.useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -32,7 +37,7 @@ export default function Login() {
       toast.warn('E-mail não é válido.');
     }
 
-    if (pass.length < 1 || pass.length > 100) {
+    if (password.length < 1 || password.length > 100) {
       formErrors = true;
       toast.warn('Campo senha precisa ter entre 12 e 100 caracteres.');
     }
@@ -48,18 +53,6 @@ export default function Login() {
 
       <Form onSubmit={handleSubmit}>
         <LabelContainer>
-          <label htmlFor="name">Name:</label>
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Digite seu nome..."
-            aria-label="Campo para inserir o seu nome."
-            autoComplete="name"
-          />
-        </LabelContainer>
-        <LabelContainer>
           <label htmlFor="email">E-mail:</label>
           <input
             id="email"
@@ -69,6 +62,18 @@ export default function Login() {
             placeholder="Digite seu e-mail..."
             aria-label="Campo para inserir o seu e-mail de login."
             autoComplete="email"
+          />
+        </LabelContainer>
+        <LabelContainer>
+          <label htmlFor="pass">Senha:</label>
+          <input
+            id="pass"
+            type="password"
+            value={password}
+            onChange={(e) => setPass(e.target.value)}
+            placeholder="Digite suas senha..."
+            aria-label="Campo para inserir a senha de login."
+            autoComplete="password"
           />
         </LabelContainer>
         <button type="submit">Entrar</button>
