@@ -30,7 +30,6 @@ export default function Students() {
         const response = await axios.get('/students');
         setStudents(response.data?.data);
         setIsLoading(false);
-        console.log(response.data?.data);
       } catch (error) {
         console.log(error);
       }
