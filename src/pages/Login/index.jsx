@@ -6,22 +6,32 @@ import { Container } from '../../styles/GlobalStyles';
 // Styled Component
 import { Form, LabelContainer } from './styled';
 
-// React Router
-import { useNavigate } from 'react-router-dom';
+// Components
+import Loading from '../../components/Loading';
 
 // Validator
 import isEmail from 'validator/lib/isEmail';
 
+// Auth
+import { useDispatch } from 'react-redux';
+
+// Redux
+import { useSelector } from 'react-redux';
+import * as Actions from '../../store/modules/auth/actions';
+
+// Lodash
+import get from 'lodash.get';
+
+// React Router
+import { useNavigate } from 'react-router-dom';
+
 // Tostify
 import { toast } from 'react-toastify';
 
-// Redux
-import { useDispatch } from 'react-redux';
+export default function Login(props) {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const prevPath = get(props, 'location.state.prevPath', '/');
 
-// Auth
-import * as Actions from '../../store/modules/auth/actions';
-
-export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = React.useState('');
@@ -44,11 +54,19 @@ export default function Login() {
 
     if (formErrors) return;
 
-    dispatch(Actions.ButtonLoginClickRequest({ email, password }));
+    dispatch(Actions.ButtonLoginClickRequest({ email, password, prevPath }));
   }
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate(prevPath);
+    }
+  }, [isLoggedIn, navigate, prevPath]);
 
   return (
     <Container>
+      <Loading isLoading={isLoggedIn} />
+
       <h1>Login</h1>
 
       <Form onSubmit={handleSubmit}>

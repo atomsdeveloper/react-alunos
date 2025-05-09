@@ -12,6 +12,9 @@ import { Container } from '../../styles/GlobalStyles';
 // Styled Components
 import { Form, LabelContainer } from './styled';
 
+// Components
+import Loading from '../../components/Loading';
+
 // React Router
 import { useNavigate } from 'react-router-dom';
 
@@ -26,6 +29,8 @@ export default function Register() {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const [isLoading, setIsLoading] = React.useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -53,6 +58,7 @@ export default function Register() {
     }
 
     if (formErrors) return;
+    setIsLoading(true);
 
     try {
       const response = await axios.post('/users/create', {
@@ -67,16 +73,20 @@ export default function Register() {
         toast.success(`Usuário ${data.name} ${message}`);
       }
 
+      setIsLoading(false);
       navigate('/login');
     } catch (e) {
       const errors = get(e, 'response.data.data.erros', []);
 
       errors && errors.map((err) => toast.error(err));
+      setIsLoading(false);
     }
   }
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
+
       <h1>Crie sua conta</h1>
 
       <Form onSubmit={handleSubmit}>

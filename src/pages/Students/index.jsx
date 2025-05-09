@@ -17,15 +17,19 @@ import { ContainerStudents, ProfilePicture } from './styled';
 
 // Loadash
 import get from 'lodash.get';
+import Loading from '../../components/Loading';
 
 export default function Students() {
   const [students, setStudents] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     async function fetch() {
       try {
+        setIsLoading(true);
         const response = await axios.get('/students');
         setStudents(response.data?.data);
+        setIsLoading(false);
         console.log(response.data?.data);
       } catch (error) {
         console.log(error);
@@ -37,6 +41,8 @@ export default function Students() {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
+
       <h1>Students</h1>
 
       <ContainerStudents>
