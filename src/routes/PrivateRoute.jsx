@@ -18,7 +18,9 @@ export default function PrivateRoute({
       // Pass the current location to the login page so it can redirect back after login
       // This is useful for when the user tries to access a protected route directly
       // and needs to be redirected to the login page first
-      <Navigate to="/" replace state={{ prevPath: location.pathname }} />
+      <Navigate
+        to={{ pathname: '/login', state: { prevPath: location.pathname } }}
+      />
     );
   }
   return <Route {...rest} component={Component} />;
