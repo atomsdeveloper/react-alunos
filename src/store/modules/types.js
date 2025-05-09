@@ -7,3 +7,6 @@ export const BUTTON_CLICK_REQUEST = 'BUTTON_CLICK_REQUEST';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+// Redux
+export const PERSIST_REHYDRATE = 'persist/REHYDRATE';
