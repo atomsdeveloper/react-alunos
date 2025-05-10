@@ -23,7 +23,7 @@ import {
   FaRegistered,
   FaBookMedical,
   FaCircle,
-  FaPowerOf,
+  FaPowerOff,
 } from 'react-icons/fa';
 
 export default function Header() {
