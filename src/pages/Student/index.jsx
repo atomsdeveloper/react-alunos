@@ -42,7 +42,7 @@ export default function Student() {
   const [name, setName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
-  const [age, setAge] = React.useState(new Date());
+  const [age, setAge] = React.useState('');
   const [weight, setWeight] = React.useState(0);
   const [height, setHeight] = React.useState(0);
 
@@ -60,9 +60,11 @@ export default function Student() {
       toast.warn('Campo nome não pode ser nulo.');
     }
 
-    if (!age) {
-      formErrors = true;
-      toast.warn('Campo idade não pode ser nulo.');
+    const birthdate = new Date(age);
+
+    if (isNaN(birthdate.getTime())) {
+      toast.error('Data de nascimento inválida.');
+      return;
     }
 
     if (name.length < 3 || name.length > 100) {
@@ -79,13 +81,12 @@ export default function Student() {
       formErrors = true;
       toast.warn('E-mail não é válido.');
     }
-
-    if (!isFloat(height)) {
+    if (!isFloat(String(height))) {
       formErrors = true;
       toast.warn('Altura não é válida.');
     }
 
-    if (!isFloat(weight)) {
+    if (!isFloat(String(weight))) {
       formErrors = true;
       toast.warn('Peso não é válido.');
     }
