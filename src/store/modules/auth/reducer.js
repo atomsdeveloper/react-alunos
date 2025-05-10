@@ -1,8 +1,9 @@
+import axios from '../../../services/axios';
 import * as types from '../types';
 
 const initialState = {
   isLoggedIn: false,
-  token: null,
+  token: '',
   user: {},
   isLoading: false,
 };
@@ -10,65 +11,62 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     // AUTH
-    case types.LOGIN_REQUEST: {
-      const newState = { ...state };
+    case types.LOGIN_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
 
-      newState.isLoading = true;
+    case types.LOGIN_SUCCESS:
+      console.log('REDUCER:', action.payload);
+      const { token, user } = action.payload || {};
+      return {
+        ...state,
+        isLoggedIn: true,
+        isLoading: false,
+        token: token || null,
+        user: user || {},
+      };
 
-      return newState;
-    }
-
-    case types.LOGIN_SUCCESS: {
-      const newState = { ...state };
-
-      newState.isLoggedIn = true;
-      newState.isLoading = false;
-      newState.token = action.payload.data.token;
-      newState.user = action.payload.data.user;
-
-      return newState;
-    }
-
-    case types.LOGIN_FAILURE: {
+    case types.LOGIN_FAILURE:
       delete axios.defaults.headers.Authorization;
-      const newState = { ...initialState };
-
-      return newState;
-    }
+      return {
+        ...initialState,
+      };
 
     // REGISTER
-    case types.REGISTER_REQUEST: {
+    case types.REGISTER_REQUEST:
       console.log('REDUCER -> Register Request', state);
-      const newState = { ...state };
+      return {
+        ...state,
+        isLoading: true,
+      };
 
-      newState.isLoading = true;
+    case types.REGISTER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name: action.payload.name,
+          email: action.payload.email,
+        },
+        isLoading: false,
+      };
 
-      return newState;
-    }
-    case types.REGISTER_UPDATE_SUCCESS: {
-      console.log('REDUCER -> Register Update', state);
-      const newState = { ...state };
+    case types.REGISTER_CREATED_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          isLoading: false,
+        },
+      };
 
-      newState.user.name = action.payload.name;
-      newState.user.email = action.payload.email;
-      newState.user.isLoading = false;
-
-      return newState;
-    }
-    case types.REGISTER_CREATED_SUCCESS: {
-      const newState = { ...state };
-
-      newState.user.isLoading = false;
-
-      return newState;
-    }
-    case types.REGISTER_FAILURE: {
-      const newState = { ...state };
-
-      newState.isLoading = false;
-
-      return newState;
-    }
+    case types.REGISTER_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+      };
 
     default:
       return state;

@@ -28,17 +28,40 @@ import { toast } from 'react-toastify';
 // Redux Saga with function* generator function
 // This is a generator function that will be used in the saga middleware
 function* ButtonLoginClickRequest({ payload }) {
+  const { email, password } = payload;
+
   try {
-    const response = yield call(axios.post, '/token', payload);
-    yield put({ type: types.LOGIN_SUCCESS, payload: response.data });
+    const response = yield call(axios.post, '/token', { email, password });
+    const data = response.data?.data;
 
-    console.log(response.data);
+    const payloadResponse = {
+      token: data.token,
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+      },
+    };
 
-    axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+    console.log('PAYLOAD', payload);
+    console.log('DATA', data);
+    console.log('PAYLOAD_RESPONSE', payloadResponse);
 
-    toast.success('Login realizado com sucesso.');
-    return yield put(Actions.ButtonLoginClickSuccess());
+    yield put({
+      type: types.LOGIN_SUCCESS,
+      payload: payloadResponse,
+    });
+
+    try {
+      axios.defaults.headers.Authorization = `Bearer ${data.token}`;
+
+      yield put(Actions.ButtonLoginClickSuccess());
+      toast.success('Login realizado com sucesso.');
+    } catch (err) {
+      console.warn('Erro ao finalizar login:', err);
+    }
   } catch (error) {
+    console.error('CATCH ERROR:', error);
     toast.error('Usuário e/ou Senha são inválidos.');
     yield put(Actions.ButtonLoginClickFailure());
   }
