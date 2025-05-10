@@ -28,13 +28,13 @@ export default function Register() {
   const nameStorage = useSelector((state) => state.auth.user.name);
   const emailStorage = useSelector((state) => state.auth.user.email);
   const isLoading = useSelector((state) => state.auth.isLoading);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   React.useEffect(() => {
-    console.log('REGISTER -> Check is idStorage:', idStorage);
     if (!idStorage) return;
 
     setName(nameStorage);
@@ -68,14 +68,16 @@ export default function Register() {
 
     if (formErrors) return;
 
-    dispatch(Actions.ButtonRegisterClickRequest({ name, email, password }));
+    dispatch(
+      Actions.ButtonRegisterClickRequest({ idStorage, name, email, password })
+    );
   }
 
   return (
     <Container>
       <Loading isLoading={isLoading} />
 
-      {idStorage ? <h1>Edite a sua conta</h1> : <h1>Crie sua conta</h1>}
+      {isLoading ? <h1>Edite a sua conta</h1> : <h1>Crie sua conta</h1>}
 
       <Form onSubmit={handleSubmit}>
         <LabelContainer>
@@ -116,7 +118,7 @@ export default function Register() {
           />
         </LabelContainer>
 
-        <button type="submit">{idStorage ? 'Salvar' : 'Registrar'}</button>
+        <button type="submit">{isLoggedIn ? 'Salvar' : 'Registrar'}</button>
       </Form>
     </Container>
   );

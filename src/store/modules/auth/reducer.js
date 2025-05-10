@@ -18,14 +18,16 @@ export default function (state = initialState, action) {
       };
 
     case types.LOGIN_SUCCESS:
-      console.log('REDUCER:', action.payload);
-      const { token, user } = action.payload || {};
       return {
         ...state,
         isLoggedIn: true,
         isLoading: false,
-        token: token || null,
-        user: user || {},
+        token: action.payload.token,
+        user: {
+          id: action.payload.user.id,
+          name: action.payload.user.name,
+          email: action.payload.user.email,
+        },
       };
 
     case types.LOGIN_FAILURE:
@@ -36,13 +38,13 @@ export default function (state = initialState, action) {
 
     // REGISTER
     case types.REGISTER_REQUEST:
-      console.log('REDUCER -> Register Request', state);
       return {
         ...state,
         isLoading: true,
       };
 
     case types.REGISTER_UPDATE_SUCCESS:
+      console.log('REDUCER -> Register Success', action.payload);
       return {
         ...state,
         user: {

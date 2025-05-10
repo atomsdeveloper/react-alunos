@@ -43,10 +43,6 @@ function* ButtonLoginClickRequest({ payload }) {
       },
     };
 
-    console.log('PAYLOAD', payload);
-    console.log('DATA', data);
-    console.log('PAYLOAD_RESPONSE', payloadResponse);
-
     yield put({
       type: types.LOGIN_SUCCESS,
       payload: payloadResponse,
@@ -76,20 +72,26 @@ function* persistRehydrate({ payload }) {
 }
 
 function* ButtonRegisterClickRequest({ payload }) {
-  const { id, name, email, password } = payload;
+  const { idStorage, name, email, password } = payload;
+
+  console.log('PAYLOAD', payload);
 
   try {
     // Edit user
-    if (id) {
-      yield call(axios.put, 'users/', {
-        id,
+    if (idStorage) {
+      yield call(axios.put, `/users/${id}/edit`, {
         email,
         name,
         password: password || undefined,
       });
       toast.success('Conta alterada com sucesso');
       yield put(
-        Actions.ButtonRegisterUpdateClickSuccess({ name, email, password, id })
+        Actions.ButtonRegisterUpdateClickSuccess({
+          name,
+          email,
+          password,
+          idStorage,
+        })
       );
     } else {
       // Create user
