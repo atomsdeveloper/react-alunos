@@ -7,7 +7,12 @@ import { Link } from 'react-router-dom';
 import axios from '../../services/axios';
 
 // Icons
-import { FaUserCircle, FaEdit, FaWindowClose } from 'react-icons/fa';
+import {
+  FaUserCircle,
+  FaEdit,
+  FaWindowClose,
+  FaExclamation,
+} from 'react-icons/fa';
 
 // Styled Component Global
 import { Container } from '../../styles/GlobalStyles';
@@ -15,9 +20,14 @@ import { Container } from '../../styles/GlobalStyles';
 // Styled Components
 import { ContainerStudents, ProfilePicture } from './styled';
 
+// Component
+import Loading from '../../components/Loading';
+
 // Loadash
 import get from 'lodash.get';
-import Loading from '../../components/Loading';
+
+// Toatify
+import { toast } from 'react-toastify';
 
 export default function Students() {
   const [students, setStudents] = React.useState([]);
@@ -38,6 +48,33 @@ export default function Students() {
     fetch();
   }, []);
 
+  const handleDeleteQuestion = (e) => {
+    e.preventDefault();
+
+    // Pega o icone de exclamação
+    const exclamation = e.currentTarget.nextSibling;
+    // Set o atributo css para ser visualizado na página
+    exclamation.setAttribute('display', 'block');
+    // Remove o link atual que foi clicado.
+    e.currentTarget.remove();
+  };
+
+  const handleDelete = async (e, id, index) => {
+    e.persist();
+    try {
+      setIsLoading(true);
+      await axios.delete(`students/${id}/delete`);
+      const newStudents = [...students];
+      newStudents.splice(index, 1);
+      setIsLoading(false);
+    } catch (e) {
+      // console.log(e);
+      const errors = get(e, 'response.data.message', []);
+
+      toast.error(`${errors} você precisa fazer login para deletar.`);
+      setIsLoading(false);
+    }
+  };
   return (
     <Container>
       <Loading isLoading={isLoading} />
@@ -45,7 +82,7 @@ export default function Students() {
       <h1>Students</h1>
 
       <ContainerStudents>
-        {students?.map((student) => (
+        {students?.map((student, index) => (
           <div key={student.id}>
             <ProfilePicture>
               {get(student, 'photos[0].url', false) ? (
@@ -59,13 +96,23 @@ export default function Students() {
 
             {/* Update */}
             <Link to={`/students/${student.id}/edit`}>
-              <FaEdit />
+              <FaEdit size={16} />
             </Link>
 
             {/* Delete */}
-            <Link to={`/students/${student.id}/delete`}>
-              <FaWindowClose />
+            <Link
+              onClick={handleDeleteQuestion}
+              to={`/students/${student.id}/delete`}
+            >
+              <FaWindowClose size={16} />
             </Link>
+
+            <FaExclamation
+              size={16}
+              display="none"
+              cursor="pointer"
+              onClick={(e) => handleDelete(e, student.id, index)}
+            />
           </div>
         ))}
       </ContainerStudents>
