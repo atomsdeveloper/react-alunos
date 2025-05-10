@@ -3,9 +3,6 @@ import styled from 'styled-components';
 // React Router
 import { Link } from 'react-router-dom';
 
-// Color Globals
-import * as Colors from '../../config/colors';
-
 export const ContainerStudents = styled.div`
   margin-top: 20px;
 

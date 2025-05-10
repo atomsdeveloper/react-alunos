@@ -26,7 +26,7 @@ export const LabelContainer = styled.div`
     margin-top: 5px;
 
     &:focus {
-      border: 1px solid ${colors.primaryColor};
+      border: 1px solid ${Colors.primaryColor};
     }
   }
 `;

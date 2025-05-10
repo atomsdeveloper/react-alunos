@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 // Config Colors
-import * as colors from '../../config/colors';
+import * as Colors from '../../config/colors';
 
 export const Form = styled.form`
   display: flex;
@@ -25,7 +25,7 @@ export const LabelContainer = styled.div`
     margin-top: 5px;
 
     &:focus {
-      border: 1px solid ${colors.primaryColor};
+      border: 1px solid ${Colors.primaryColor};
     }
   }
 `;
