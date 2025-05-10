@@ -4,7 +4,7 @@ import React from 'react';
 import { Container } from '../../styles/GlobalStyles';
 
 // Styles
-import { Form, LabelContainer, Title } from './styled';
+import { Form, LabelContainer, ProfilePicture, Title } from './styled';
 
 // Component
 import Loading from '../../components/Loading';
@@ -13,10 +13,10 @@ import Loading from '../../components/Loading';
 import axios from '../../services/axios';
 
 // React Router
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 
 // Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from '../../store/modules/auth/actions';
 
 // Toastify
@@ -31,21 +31,20 @@ import get from 'lodash.get';
 // Icons
 import { FaEdit, FaUserCircle } from 'react-icons/fa';
 
-// Types
-import PropTypes from 'prop-types';
-
-export default function Student({ match }) {
+export default function Student() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const id = get(match, 'params.id', null);
+  const { id } = useParams();
+
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const [name, setName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
-  const [age, setAge] = React.useState('');
+  const [age, setAge] = React.useState(new Date());
   const [weight, setWeight] = React.useState(0);
-  const [height, setHeight] = React.useState('');
+  const [height, setHeight] = React.useState(0);
 
   const [photo, setPhoto] = React.useState('');
 
@@ -91,11 +90,6 @@ export default function Student({ match }) {
       toast.warn('Peso não é válido.');
     }
 
-    if (!idStorage && (pass.length < 1 || pass.length > 100)) {
-      formErrors = true;
-      toast.warn('Campo senha precisa ter entre 12 e 100 caracteres.');
-    }
-
     if (formErrors) return;
 
     try {
@@ -105,17 +99,17 @@ export default function Student({ match }) {
           name,
           lastName,
           email,
-          birthdate: age,
+          birthdate: new Date(age).getTime(),
           weight,
           height,
         });
         toast.success('Editado com sucesso.');
       } else {
-        const { data } = await axios.put(`/students/create`, {
+        const { data } = await axios.post(`/students/create`, {
           name,
           lastName,
           email,
-          birthdate: age,
+          birthdate: new Date(age).getTime(),
           weight,
           height,
         });
@@ -141,15 +135,22 @@ export default function Student({ match }) {
       try {
         setIsLoading(true);
         const { data } = await axios.get(`/students/${id}`);
-        const photo = get(data, 'Photo[0].url', '');
+
+        // Converte 'new Date' para número.
+        const birthdateTimestamp = get(data.data, 'birthdate', '');
+        const birthdateString = birthdateTimestamp
+          ? new Date(birthdateTimestamp).toISOString().split('T')[0]
+          : '';
+
+        const photo = get(data.data, 'photos[0].url', '');
         setPhoto(photo);
 
-        setName(data.name);
-        setLastName(data.lastname);
-        setEmail(data.email);
-        setWeight(data.weight);
-        setAge(data.birthdate);
-        setHeight(data.height);
+        setName(data.data.name);
+        setLastName(data.data.lastname);
+        setEmail(data.data.email);
+        setWeight(data.data.weight);
+        setAge(birthdateString);
+        setHeight(data.data.height);
 
         setIsLoading(false);
       } catch (err) {
@@ -169,10 +170,10 @@ export default function Student({ match }) {
     <Container>
       <Loading isLoading={isLoading} />
 
-      {id ? <Title>Edit Student</Title> : <Title>Created Student</Title>}
+      {id ? <Title>Edit Student</Title> : <Title>Create Student</Title>}
 
       {id && (
-        <div>
+        <ProfilePicture>
           {photo ? (
             <img src={photo} alt={`Foto do estudante ${name}`} />
           ) : (
@@ -181,7 +182,7 @@ export default function Student({ match }) {
           <Link to={`/photo/${id}`}>
             <FaEdit size={24} />
           </Link>
-        </div>
+        </ProfilePicture>
       )}
 
       <Form onSubmit={handleSubmit}>
@@ -194,8 +195,6 @@ export default function Student({ match }) {
             onChange={(e) => setName(e.target.value)}
             placeholder="Digite seu nome..."
             aria-label="Campo para inserir o seu nome."
-            autoComplete="name"
-            minLength={3}
           />
         </LabelContainer>
         <LabelContainer>
@@ -208,8 +207,6 @@ export default function Student({ match }) {
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Digite seu sobrenome..."
               aria-label="Campo para inserir o seu sobrenome."
-              autoComplete="lastname"
-              minLength={3}
             />
           </LabelContainer>
           <label htmlFor="email">E-mail:</label>
@@ -220,7 +217,6 @@ export default function Student({ match }) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Digite seu e-mail..."
             aria-label="Campo para inserir o seu e-mail ."
-            autoComplete="email"
           />
         </LabelContainer>
         <LabelContainer>
@@ -229,17 +225,16 @@ export default function Student({ match }) {
             id="weight"
             type="number"
             value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            onChange={(e) => setWeight(parseFloat(e.target.value))}
             placeholder="Digite seu peso..."
             aria-label="Campo para inserir a sua peso."
-            autoComplete="number"
           />
         </LabelContainer>
         <LabelContainer>
-          <label htmlFor="birthdate">Data de Nascimento:</label>
+          <label htmlFor="birthdate">Idade</label>
           <input
             id="birthdate"
-            type="text"
+            type="date"
             value={age}
             onChange={(e) => setAge(e.target.value)}
             placeholder="Digite sua data de nascimento..."
@@ -252,10 +247,9 @@ export default function Student({ match }) {
             id="height"
             type="number"
             value={height}
-            onChange={(e) => setHeight(e.target.value)}
+            onChange={(e) => setHeight(parseFloat(e.target.value))}
             placeholder="Digite sua altura..."
             aria-label="Campo para inserir a sua altura."
-            autoComplete="number"
           />
         </LabelContainer>
 
@@ -264,6 +258,3 @@ export default function Student({ match }) {
     </Container>
   );
 }
-Student.propTypes = {
-  match: PropTypes.shape({}).isRequired,
-};

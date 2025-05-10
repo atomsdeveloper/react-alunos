@@ -1,8 +1,10 @@
+import React from 'react';
+
 // Styled Component
 import { Container } from '../../styles/GlobalStyles';
 
 // Styled
-import { Title, Form, LabelContainer } from './styled';
+import { Title, Form, LabelContainer, ProfilePicture } from './styled';
 
 // Axios
 import axios from '../../services/axios';
@@ -12,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import * as Actions from '../../store/modules/auth/actions';
 
 // React Router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Loadash
 import get from 'lodash.get';
@@ -26,11 +28,11 @@ import { toast } from 'react-toastify';
 // Types
 import PropTypes from 'prop-types';
 
-export default function Photos({ match }) {
+export default function Photos() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const id = get(match, 'params.id', '');
+  const { id } = useParams();
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [photo, setPhoto] = React.useState('');
@@ -58,7 +60,7 @@ export default function Photos({ match }) {
     setPhoto(photoUrl);
 
     const formData = new FormData();
-    formData.append('stundent_id', id);
+    formData.append('student_id', id);
     formData.append('file', photo);
 
     try {
@@ -70,6 +72,7 @@ export default function Photos({ match }) {
       });
       toast.success('Foto enviada com sucesso.');
       setIsLoading(false);
+      navigate('/');
     } catch (error) {
       const status = get(error, 'response.data', '');
       toast.error('Erro ao enviar arquivo');
@@ -87,17 +90,19 @@ export default function Photos({ match }) {
 
       <Form>
         <LabelContainer>
-          <label htmlFor="photo">
-            {photo ? <img src={photo} alt="Foto" /> : 'Selecionar'}
-            <input
-              id="photo"
-              type="file"
-              onChange={handleChange}
-              placeholder="Digite seu nome..."
-              aria-label="Campo para inserir o seu arquivos."
-              autoComplete="name"
-            />
-          </label>
+          <ProfilePicture>
+            <label htmlFor="photo">
+              {photo ? <img src={photo} alt="Foto" /> : 'Selecionar'}
+              <input
+                id="photo"
+                type="file"
+                onChange={handleChange}
+                placeholder="Digite seu nome..."
+                aria-label="Campo para inserir o seu arquivos."
+                autoComplete="name"
+              />
+            </label>
+          </ProfilePicture>
         </LabelContainer>
       </Form>
     </Container>

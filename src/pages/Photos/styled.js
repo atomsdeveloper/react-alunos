@@ -47,3 +47,11 @@ export const LabelContainer = styled.div`
     }
   }
 `;
+
+export const ProfilePicture = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;

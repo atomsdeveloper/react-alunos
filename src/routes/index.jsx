@@ -40,7 +40,7 @@ export default function RoutesClient() {
       />
 
       <Route
-        path="/fotos/:id"
+        path="/photo/:id"
         element={
           <PrivateRoute isClosed>
             <Photos />
