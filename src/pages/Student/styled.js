@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 // Config Colors
-import * as colors from '../../config/colors';
+import * as Colors from '../../config/colors';
 
 export const Form = styled.form`
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
 
@@ -28,4 +29,37 @@ export const LabelContainer = styled.div`
       border: 1px solid ${colors.primaryColor};
     }
   }
+`;
+
+export const ProfilePicture = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 0 0 20px;
+  margin-top: 30px;
+
+  img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background-color: ${Colors.primaryColor};
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+`;
+
+export const Title = styled.h1`
+  text-align: center;
 `;

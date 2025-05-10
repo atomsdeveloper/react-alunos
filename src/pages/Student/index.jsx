@@ -4,7 +4,7 @@ import React from 'react';
 import { Container } from '../../styles/GlobalStyles';
 
 // Styles
-import { Form, LabelContainer } from './styled';
+import { Form, LabelContainer, Title } from './styled';
 
 // Component
 import Loading from '../../components/Loading';
@@ -13,20 +13,23 @@ import Loading from '../../components/Loading';
 import axios from '../../services/axios';
 
 // React Router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // Redux
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as Actions from '../../store/modules/auth/actions';
 
 // Toastify
 import { toast } from 'react-toastify';
 
 // Validator
-import { isEmail, isInt, isFloat } from 'validator';
+import { isEmail, isFloat } from 'validator';
 
 // Lodash
 import get from 'lodash.get';
+
+// Icons
+import { FaEdit, FaUserCircle } from 'react-icons/fa';
 
 // Types
 import PropTypes from 'prop-types';
@@ -43,6 +46,8 @@ export default function Student({ match }) {
   const [age, setAge] = React.useState('');
   const [weight, setWeight] = React.useState(0);
   const [height, setHeight] = React.useState('');
+
+  const [photo, setPhoto] = React.useState('');
 
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -115,11 +120,11 @@ export default function Student({ match }) {
           height,
         });
         toast.success('Criado com sucesso.');
-        navigate(`/students/${id}/edit`);
+        navigate(`/students/${data.id}/edit`);
       }
       setIsLoading(false);
     } catch (error) {
-      const status = get(err, 'response.status', 0);
+      const status = get(err, 'response.status', '');
       const data = get(err, 'response.data.data', {});
       const errors = get(err, 'response.data.data.errors', []);
 
@@ -137,6 +142,7 @@ export default function Student({ match }) {
         setIsLoading(true);
         const { data } = await axios.get(`/students/${id}`);
         const photo = get(data, 'Photo[0].url', '');
+        setPhoto(photo);
 
         setName(data.name);
         setLastName(data.lastname);
@@ -155,13 +161,28 @@ export default function Student({ match }) {
         navigate('/');
       }
     }
+
+    fetch();
   }, [id]);
 
   return (
     <Container>
       <Loading isLoading={isLoading} />
 
-      {id ? <h1>Edit Student</h1> : <h1>Created Student</h1>}
+      {id ? <Title>Edit Student</Title> : <Title>Created Student</Title>}
+
+      {id && (
+        <div>
+          {photo ? (
+            <img src={photo} alt={`Foto do estudante ${name}`} />
+          ) : (
+            <FaUserCircle size={180} />
+          )}
+          <Link to={`/photo/${id}`}>
+            <FaEdit size={24} />
+          </Link>
+        </div>
+      )}
 
       <Form onSubmit={handleSubmit}>
         <LabelContainer>
