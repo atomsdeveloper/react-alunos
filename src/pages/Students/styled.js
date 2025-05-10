@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+// React Router
+import { Link } from 'react-router-dom';
+
+// Color Globals
+import * as Colors from '../../config/colors';
+
 export const ContainerStudents = styled.div`
   margin-top: 20px;
 
@@ -21,4 +27,10 @@ export const ProfilePicture = styled.div`
     height: 36px;
     border-radius: 50%;
   }
+`;
+
+export const NewStudent = styled(Link)`
+  display: block;
+  padding: 10px 0;
+  color: #c3073f;
 `;

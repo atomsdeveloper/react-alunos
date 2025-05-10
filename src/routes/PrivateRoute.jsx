@@ -4,13 +4,12 @@ import { Route, Navigate, useLocation } from 'react-router-dom';
 // Types
 import PropTypes from 'prop-types';
 
-export default function PrivateRoute({
-  component: Component,
-  isClosed = false,
-  ...rest
-}) {
+// Redux
+import { useSelector } from 'react-redux';
+
+export default function PrivateRoute({ children, isClosed = false, ...rest }) {
   const location = useLocation();
-  const isLoggedIn = false; // Replace with your actual authentication logic
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   if (isClosed && !isLoggedIn) {
     return (
@@ -23,10 +22,9 @@ export default function PrivateRoute({
       />
     );
   }
-  return <Route {...rest} component={Component} />;
+  return children;
 }
 PrivateRoute.propTypes = {
-  component: PropTypes.oneOf([PropTypes.elementType, PropTypes.func])
-    .isRequired,
+  children: PropTypes.oneOf([PropTypes.elementType, PropTypes.func]).isRequired,
   isClosed: PropTypes.bool,
 };

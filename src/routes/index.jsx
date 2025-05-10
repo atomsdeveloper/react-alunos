@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute.jsx';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Students from '../pages/Students';
+import Student from '../pages/Student';
 import Photos from '../pages/Photos';
 import NotFound from '../pages/NotFound';
 
@@ -21,10 +22,19 @@ export default function RoutesClient() {
       <Route path="/register" element={<Register />} />
 
       <Route
+        path="/students/create"
+        element={
+          <PrivateRoute isClosed>
+            <Student />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
         path="/students/:id/edit"
         element={
           <PrivateRoute isClosed>
-            <h1>oi</h1>
+            <Student />
           </PrivateRoute>
         }
       />

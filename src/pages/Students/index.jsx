@@ -18,7 +18,7 @@ import {
 import { Container } from '../../styles/GlobalStyles';
 
 // Styled Components
-import { ContainerStudents, ProfilePicture } from './styled';
+import { ContainerStudents, ProfilePicture, NewStudent } from './styled';
 
 // Component
 import Loading from '../../components/Loading';
@@ -80,6 +80,9 @@ export default function Students() {
       <Loading isLoading={isLoading} />
 
       <h1>Students</h1>
+      <NewStudent href="/students/create" color="#C3073F;">
+        Novo Aluno
+      </NewStudent>
 
       <ContainerStudents>
         {students?.map((student, index) => (
