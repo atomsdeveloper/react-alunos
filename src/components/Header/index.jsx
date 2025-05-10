@@ -1,5 +1,5 @@
 // Styled Components
-import { Nav } from './styled';
+import { Nav, Title, ListLinks } from './styled';
 
 // Redux
 import * as Actions from '../../store/modules/auth/actions';
@@ -17,14 +17,8 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // Icons
-import {
-  FaHome,
-  FaUserAlt,
-  FaRegistered,
-  FaBookMedical,
-  FaCircle,
-  FaPowerOff,
-} from 'react-icons/fa';
+import { FaListOl, FaCircle, FaPowerOff } from 'react-icons/fa';
+import { IoMdLogIn, IoMdCreate } from 'react-icons/io';
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -40,27 +34,28 @@ export default function Header() {
   };
   return (
     <Nav>
-      <Link to="/" rel="noopener noreferrer">
-        {/* <FaBookMedical size={24} color="#fff" /> */}
-        List Students
-      </Link>
-      <Link to="/register" rel="noopener noreferrer">
-        {/* <FaRegistered size={24} color="#fff" /> */}
-        Register
-      </Link>
-      {isLoggedIn ? (
-        <Link to="/logout" onClick={handleLogout} rel="noopener noreferrer">
-          {/* <FaPowerOff size={24} color="#fff" /> */}
-          Logout
+      <Title>AppSchool</Title>
+      <ListLinks>
+        <Link to="/" rel="noopener noreferrer">
+          <FaListOl size={18} color="#fff" />
         </Link>
-      ) : (
-        <Link to="/login" rel="noopener noreferrer">
-          {/* <FaUserAlt size={24} color="#fff" /> */}
-          Login
-        </Link>
-      )}
+        {isLoggedIn && (
+          <Link to="/register" rel="noopener noreferrer">
+            <IoMdCreate size={18} color="#fff" />
+          </Link>
+        )}
+        {isLoggedIn ? (
+          <Link to="/logout" onClick={handleLogout} rel="noopener noreferrer">
+            <FaPowerOff size={18} color="#fff" />
+          </Link>
+        ) : (
+          <Link to="/login" rel="noopener noreferrer">
+            <IoMdLogIn size={18} color="#fff" />
+          </Link>
+        )}
 
-      {isLoggedIn && <FaCircle size={24} color="#fff" />}
+        {isLoggedIn && <FaCircle size={14} color="#54b659" />}
+      </ListLinks>
     </Nav>
   );
 }

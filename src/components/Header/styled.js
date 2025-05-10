@@ -8,7 +8,7 @@ export const Nav = styled.nav`
   padding: 2rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   a {
     color: #fff;
@@ -20,4 +20,14 @@ export const Nav = styled.nav`
       transform: scale(1.1);
     }
   }
+`;
+
+export const ListLinks = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+`;
+
+export const Title = styled.h1`
+  color: #fff;
 `;
