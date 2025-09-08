@@ -18,6 +18,7 @@ export const Table = styled.table`
 
   th,
   td {
+    height: 70px;
     padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -69,7 +70,10 @@ export const Tbody = styled.tbody`
   width: 100%;
 
   td:last-child {
-    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* espaçamento horizontal */
+    justify-content: center; /* centraliza os ícones na célula */
   }
 `;
 
@@ -85,16 +89,23 @@ export const LinkStyled = styled(Link)`
   display: flex;
   align-items: center;
 
-  width: auto;
-
   font-size: small;
   font-weight: bold;
 
-  padding: 0.25rem;
+  padding: 0.3rem 0.8rem;
   border-radius: 12px;
 
   color: ${Colors.primaryColorLight};
-  background-color: ${Colors.infoColor};
+
+  background-color: ${({ $type }) =>
+    $type === 'delete' ? Colors.delColorButton : Colors.infoColorButton};
+
+  &:hover {
+    filter: brightness(0.9);
+    transition:
+      background-color 0.3s ease-in-out,
+      color 0.3s ease-in-out;
+  }
 `;
 
 export const HeaderStudents = styled.div`

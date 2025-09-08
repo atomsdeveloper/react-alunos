@@ -7,12 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../services/axios';
 
 // Icons
-import {
-  FaUserCircle,
-  FaEdit,
-  FaWindowClose,
-  FaExclamation,
-} from 'react-icons/fa';
+import { PiTrash } from 'react-icons/pi';
+import { FaUserCircle, FaExclamation } from 'react-icons/fa';
+import { CiEdit } from 'react-icons/ci';
 
 // Styled Component Global
 import { Container } from '../../styles/GlobalStyles';
@@ -123,15 +120,19 @@ export default function Students() {
                 <td>{student.name}</td>
                 <td>{student.email}</td>
                 <td>
-                  <LinkStyled to={`/students/${student.id}/edit`}>
-                    <FaEdit size={16} />
+                  <LinkStyled to={`/students/${student.id}/edit`} $type="edit">
+                    Editar
+                    <CiEdit size={16} />
                   </LinkStyled>
 
                   <LinkStyled
+                    $type="delete"
                     onClick={handleDeleteQuestion}
                     to={`/students/${student.id}/delete`}
                   >
-                    <FaWindowClose size={16} />
+                    {' '}
+                    Apagar
+                    <PiTrash size={16} />
                   </LinkStyled>
 
                   <FaExclamation

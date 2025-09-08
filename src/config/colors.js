@@ -1,12 +1,16 @@
 // Primary colors
 export const primaryColor = '#C3073F';
-export const primaryColorLight = '#e0d8dbff';
+export const primaryColorLight = '#ebebebff';
 export const primaryColorDark = '#1A1A1D';
 
 // Secondary colors
 export const secondaryColor = '#950740';
 export const secondaryColorLight = '#C3073F';
 export const secondaryColorDark = '#1A1A1D';
+
+// Buttons
+export const infoColorButton = '#297791ff';
+export const delColorButton = '#c30707ff';
 
 // Warning colors
 export const successColor = '#00B300';
