@@ -18,8 +18,10 @@ import { toast } from 'react-toastify';
 
 // Validator
 import { isEmail } from 'validator';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useSelector((state) => console.log('State', state));
@@ -71,13 +73,15 @@ export default function Register() {
     dispatch(
       Actions.ButtonRegisterClickRequest({ idStorage, name, email, password })
     );
+
+    navigate('/login');
   }
 
   return (
     <Container>
-      <Loading isLoading={isLoading} />
+      <Loading isLoading={isLoggedIn && isLoading} />
 
-      {isLoading ? <h1>Edite a sua conta</h1> : <h1>Crie sua conta</h1>}
+      {isLoggedIn ? <h1>Edite a sua conta</h1> : <h1>Crie sua conta</h1>}
 
       <Form onSubmit={handleSubmit}>
         <LabelContainer>
