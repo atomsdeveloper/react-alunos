@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import * as Colors from '../config/colors';
 
 export const GlobalStyles = createGlobalStyle`
+
+
   * {
     margin: 0;
     padding: 0;
@@ -16,19 +18,20 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Roboto', sans-serif;
-    background-color: ${Colors.primaryColorDark};
-    color: ${Colors.primaryColor};
+    font-family: 'Poppins', 'Montserrat' sans-serif;
+    background-color: ${Colors.primaryColorLight};
+    color: ${Colors.primaryColorDark};
     font-size: 16px;
   }
 
   html, body, #root {
     height: 100%;
+    font-family: "Montserrat";
   }
 
   button {
     cursor: pointer;
-    background: ${Colors.primaryColor};
+    background: ${Colors.primaryColorDark};
     border: none;
     color: #fff;
     padding: 10px 20px;
@@ -37,7 +40,7 @@ export const GlobalStyles = createGlobalStyle`
     transition: all 300ms;
   }
 
-  butto:hover {
+  button:hover {
     filter: brightness(80%)
   }
 
