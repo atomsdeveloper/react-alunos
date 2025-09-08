@@ -57,7 +57,6 @@ function* ButtonLoginClickRequest({ payload }) {
       console.warn('Erro ao finalizar login:', err);
     }
   } catch (error) {
-    console.error('CATCH ERROR:', error);
     toast.error('Usuário e/ou Senha são inválidos.');
     yield put(Actions.ButtonLoginClickFailure());
   }
@@ -73,8 +72,6 @@ function* persistRehydrate({ payload }) {
 
 function* ButtonRegisterClickRequest({ payload }) {
   const { idStorage, name, email, password } = payload;
-
-  console.log('PAYLOAD', payload);
 
   try {
     // Edit user
