@@ -1,20 +1,75 @@
 import styled from 'styled-components';
 
-// React Router
+import * as Colors from '../../config/colors';
+
 import { Link } from 'react-router-dom';
 
-export const ContainerStudents = styled.div`
+export const ContainerStudents = styled.section`
   margin-top: 20px;
+`;
 
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 0;
+export const Table = styled.table`
+  width: 100%;
+
+  border-collapse: collapse;
+
+  border-radius: 4px;
+  overflow: hidden;
+
+  th,
+  td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
   }
 
-  div + div {
-    border-top: solid 1px #eee;
+  td:first-child,
+  th:first-child {
+    text-align: center;
+    width: 80px;
+  }
+
+  td:last-child,
+  th:last-child {
+    text-align: center;
+    width: 200px;
+  }
+
+  tbody tr:hover {
+    background: #f9f9f9;
+  }
+
+  img {
+    max-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  svg {
+    margin-left: 6px;
+    cursor: pointer;
+  }
+`;
+
+export const Thead = styled.thead`
+  width: 100%;
+
+  background: #f5f5f5;
+
+  th {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+  }
+`;
+
+export const Tbody = styled.tbody`
+  width: 100%;
+
+  td:last-child {
+    width: auto;
   }
 `;
 
@@ -26,8 +81,30 @@ export const ProfilePicture = styled.div`
   }
 `;
 
-export const NewStudent = styled(Link)`
+export const LinkStyled = styled(Link)`
+  display: flex;
+  align-items: center;
+
+  width: auto;
+
+  font-size: small;
+  font-weight: bold;
+
+  padding: 0.25rem;
+  border-radius: 12px;
+
+  color: ${Colors.primaryColorLight};
+  background-color: ${Colors.infoColor};
+`;
+
+export const HeaderStudents = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const NewStudent = styled.button`
+  width: 100px;
   display: block;
   padding: 10px 0;
-  color: #c3073f;
 `;

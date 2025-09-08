@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Link
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Axios
 import axios from '../../services/axios';
@@ -18,30 +18,43 @@ import {
 import { Container } from '../../styles/GlobalStyles';
 
 // Styled Components
-import { ContainerStudents, ProfilePicture, NewStudent } from './styled';
+import {
+  ContainerStudents,
+  ProfilePicture,
+  LinkStyled,
+  HeaderStudents,
+  NewStudent,
+  Table,
+  Thead,
+  Tbody,
+} from './styled';
 
 // Component
 import Loading from '../../components/Loading';
 
-// Loadash
+// Lodash
 import get from 'lodash.get';
 
-// Toatify
+// Toastify
 import { toast } from 'react-toastify';
 
 export default function Students() {
+  const navigate = useNavigate();
+
   const [students, setStudents] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     async function fetch() {
+      setIsLoading(true);
+
       try {
-        setIsLoading(true);
         const response = await axios.get('/students');
-        setStudents(response.data?.data);
+        setStudents(response.data.data);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
+        setStudents([]);
+        throw new Error('Não foi possível buscar os estudantes.');
       }
     }
 
@@ -51,11 +64,8 @@ export default function Students() {
   const handleDeleteQuestion = (e) => {
     e.preventDefault();
 
-    // Pega o icone de exclamação
     const exclamation = e.currentTarget.nextSibling;
-    // Set o atributo css para ser visualizado na página
     exclamation.setAttribute('display', 'block');
-    // Remove o link atual que foi clicado.
     e.currentTarget.remove();
   };
 
@@ -66,58 +76,75 @@ export default function Students() {
       await axios.delete(`students/${id}/delete`);
       const newStudents = [...students];
       newStudents.splice(index, 1);
+      setStudents(newStudents); // <-- estava faltando atualizar o state
       setIsLoading(false);
     } catch (e) {
-      // console.log(e);
       const errors = get(e, 'response.data.message', []);
-
       toast.error(`${errors} você precisa fazer login para deletar.`);
       setIsLoading(false);
     }
   };
+
+  const handleRouteCreateStudent = () => {
+    navigate('/students/create');
+  };
+
   return (
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1>Students</h1>
-      <NewStudent href="/students/create" color="#C3073F;">
-        Novo Aluno
-      </NewStudent>
+      <HeaderStudents>
+        <h1>Estudantes</h1>
+        <NewStudent onClick={handleRouteCreateStudent}>Novo Aluno</NewStudent>
+      </HeaderStudents>
 
       <ContainerStudents>
-        {students?.map((student, index) => (
-          <div key={student.id}>
-            <ProfilePicture>
-              {get(student, 'photos[0].url', false) ? (
-                <img src={student.photos[0].url} alt="" />
-              ) : (
-                <FaUserCircle size={36} />
-              )}
-            </ProfilePicture>
-            <span>{student.name}</span>
-            <span>{student.email}</span>
+        <Table>
+          <Thead>
+            <tr>
+              <th>Foto</th>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Ações</th>
+            </tr>
+          </Thead>
+          <Tbody>
+            {students?.map((student, index) => (
+              <tr key={student.id}>
+                <td>
+                  <ProfilePicture>
+                    {get(student, 'photos[0].url', false) ? (
+                      <img src={student.photos[0].url} alt="" />
+                    ) : (
+                      <FaUserCircle size={36} />
+                    )}
+                  </ProfilePicture>
+                </td>
+                <td>{student.name}</td>
+                <td>{student.email}</td>
+                <td>
+                  <LinkStyled to={`/students/${student.id}/edit`}>
+                    <FaEdit size={16} />
+                  </LinkStyled>
 
-            {/* Update */}
-            <Link to={`/students/${student.id}/edit`}>
-              <FaEdit size={16} />
-            </Link>
+                  <LinkStyled
+                    onClick={handleDeleteQuestion}
+                    to={`/students/${student.id}/delete`}
+                  >
+                    <FaWindowClose size={16} />
+                  </LinkStyled>
 
-            {/* Delete */}
-            <Link
-              onClick={handleDeleteQuestion}
-              to={`/students/${student.id}/delete`}
-            >
-              <FaWindowClose size={16} />
-            </Link>
-
-            <FaExclamation
-              size={16}
-              display="none"
-              cursor="pointer"
-              onClick={(e) => handleDelete(e, student.id, index)}
-            />
-          </div>
-        ))}
+                  <FaExclamation
+                    size={16}
+                    display="none"
+                    cursor="pointer"
+                    onClick={(e) => handleDelete(e, student.id, index)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </Tbody>
+        </Table>
       </ContainerStudents>
     </Container>
   );
