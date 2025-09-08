@@ -8,21 +8,21 @@ import * as Actions from '../../store/modules/auth/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
 // React Router
-import { useNavigate } from 'react-router-dom';
-
-// Router Dom
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // Toastify
 import { toast } from 'react-toastify';
 
 // Icons
-import { FaListOl, FaCircle, FaPowerOff } from 'react-icons/fa';
-import { IoMdLogIn, IoMdCreate } from 'react-icons/io';
+import { FaCircle, FaReact } from 'react-icons/fa';
+import { CgLogOut } from 'react-icons/cg';
+import { IoMdLogIn } from 'react-icons/io';
+import { PiStudent, PiLock } from 'react-icons/pi';
 
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const handleLogout = (e) => {
@@ -34,19 +34,21 @@ export default function Header() {
   };
   return (
     <Nav>
-      <Title>AppSchool</Title>
+      <Title>
+        <FaReact size={36} />
+      </Title>
       <ListLinks>
         <Link to="/" rel="noopener noreferrer">
-          <FaListOl size={18} color="#fff" />
+          <PiStudent size={18} color="#fff" />
         </Link>
         {isLoggedIn && (
           <Link to="/register" rel="noopener noreferrer">
-            <IoMdCreate size={18} color="#fff" />
+            <PiLock size={18} color="#fff" />
           </Link>
         )}
         {isLoggedIn ? (
           <Link to="/logout" onClick={handleLogout} rel="noopener noreferrer">
-            <FaPowerOff size={18} color="#fff" />
+            <CgLogOut size={18} color="#fff" />
           </Link>
         ) : (
           <Link to="/login" rel="noopener noreferrer">
@@ -54,7 +56,7 @@ export default function Header() {
           </Link>
         )}
 
-        {isLoggedIn && <FaCircle size={14} color="#54b659" />}
+        {isLoggedIn && <FaCircle size={8} color="#54b659" />}
       </ListLinks>
     </Nav>
   );
