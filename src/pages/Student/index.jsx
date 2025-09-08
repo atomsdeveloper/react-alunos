@@ -118,9 +118,8 @@ export default function Student() {
         navigate(`/students/${data.id}/edit`);
       }
       setIsLoading(false);
-    } catch (error) {
-      const status = get(err, 'response.status', '');
-      const data = get(err, 'response.data.data', {});
+    } catch (err) {
+      const status = get(err, 'response.status', {});
       const errors = get(err, 'response.data.data.errors', []);
 
       if (errors.length > 0) errors.map((err) => toast.error(err));
